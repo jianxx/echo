@@ -1,8 +1,12 @@
 package main
 
 import (
+	"echo"
+	"fmt"
 	"log"
 	"net"
+
+	"github.com/golang/protobuf/proto"
 )
 
 func main() {
@@ -22,9 +26,24 @@ func main() {
 	buffer := make([]byte, 2048)
 	size, error := connection.Read(buffer)
 	if error != nil {
-		log.Println("Cannot read from the buffer! Error: " + error.Error())
+		log.Panicln("Cannot read from the buffer! Error: " + error.Error())
 	}
-	data := string(buffer[:size])
-	log.Println("Received data: " + data)
-	connection.Write([]byte("Echoed from Go: " + data))
+	data := buffer[:size]
+	transmissionObject := &echo.TransmissionObject{}
+	error = proto.Unmarshal(data, transmissionObject)
+	if error != nil {
+		log.Panicln(
+			"Unable to unmarshal the buffer! Error: " + error.Error())
+	}
+	log.Println("Message = " + transmissionObject.GetMessage())
+	log.Println("Value = " +
+		fmt.Sprintf("%f", transmissionObject.GetValue()))
+	transmissionObject.Message = "Echoed from Go: " + transmissionObject.GetMessage()
+	transmissionObject.Value = 2 * transmissionObject.GetValue()
+	message, error := proto.Marshal(transmissionObject)
+	if error != nil {
+		log.Panicln("Unable to marshal the object! Error: " + error.
+			Error())
+	}
+	connection.Write(message)
 }

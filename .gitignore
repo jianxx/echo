@@ -1,3 +1,6 @@
+## vscode
+.vscode
+
 ## Bazel
 bazel-bin
 bazel-echo

@@ -2,6 +2,7 @@ load("@rules_java//java:defs.bzl", "java_binary")
 
 java_binary(
     name = "EchoClient",
-    srcs = ["echoclient/EchoClient.java"],
-    main_class = "client.echoclient.EchoClient",
+    srcs = ["src/main/java/com/github/jianxx/echo/EchoClient.java"],
+    main_class = "com.github.jianxx.echo.EchoClient",
+    deps = ["//proto:transmission_object_java_proto"],
 )
