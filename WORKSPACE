@@ -61,33 +61,33 @@ load("@rules_proto_grpc//go:repositories.bzl", rules_proto_grpc_go_repos = "go_r
 rules_proto_grpc_go_repos()
 
 # Go repositories
-go_repository(
-    name = "org_golang_google_protobuf",
-    build_file_proto_mode = "disable",
-    commit = "3f7a61f89bb6813f89d981d1870ed68da0b3c3f1",
-    importpath = "google.golang.org/protobuf",
-    remote = "git://github.com/protocolbuffers/protobuf-go",
-    vcs = "git",
-)
+# go_repository(
+#     name = "org_golang_google_protobuf",
+#     build_file_proto_mode = "disable",
+#     commit = "3f7a61f89bb6813f89d981d1870ed68da0b3c3f1",
+#     importpath = "google.golang.org/protobuf",
+#     remote = "git://github.com/protocolbuffers/protobuf-go",
+#     vcs = "git",
+# )
 
-go_repository(
-    name = "org_golang_google_grpc",
-    importpath = "google.golang.org/grpc",
-    sum = "h1:J0UbZOIrCAl+fpTOf8YLs4dJo8L/owV4LYVtAXQoPkw=",
-    version = "v1.22.0",
-)
+# go_repository(
+#     name = "org_golang_google_grpc",
+#     importpath = "google.golang.org/grpc",
+#     sum = "h1:J0UbZOIrCAl+fpTOf8YLs4dJo8L/owV4LYVtAXQoPkw=",
+#     version = "v1.22.0",
+# )
 
-go_repository(
-    name = "org_golang_x_net",
-    commit = "9ef5ab9c4fbe0896a77f4b0dbd17e06eb6fb9038",
-    importpath = "golang.org/x/net",
-    remote = "git://github.com/golang/net",
-    vcs = "git",
-)
+# go_repository(
+#     name = "org_golang_x_net",
+#     commit = "9ef5ab9c4fbe0896a77f4b0dbd17e06eb6fb9038",
+#     importpath = "golang.org/x/net",
+#     remote = "git://github.com/golang/net",
+#     vcs = "git",
+# )
 
-go_repository(
-    name = "org_golang_x_text",
-    importpath = "golang.org/x/text",
-    sum = "h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=",
-    version = "v0.3.0",
-)
+# go_repository(
+#     name = "org_golang_x_text",
+#     importpath = "golang.org/x/text",
+#     sum = "h1:g61tztE5qeGQ89tm6NTjjM9VPIm088od1l6aSorWRWg=",
+#     version = "v0.3.0",
+# )
