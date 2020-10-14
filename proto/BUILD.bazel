@@ -32,18 +32,18 @@ proto_library(
 go_grpc_library(
     name = "transceiver_go_proto_grpc",
     importpath = "echo",
-    visibility = ["//server/echo_server:__pkg__"],
+    visibility = ["//visibility:public"],
     deps = [":transceiver_proto"],
 )
 
 java_proto_library(
     name = "transceiver_java_proto",
-    visibility = ["//client/echo_client:__subpackages__"],
+    visibility = ["//client:__subpackages__"],
     deps = [":transceiver_proto"],
 )
 
 java_grpc_library(
     name = "transceiver_java_proto_grpc",
-    visibility = ["//client/echo_client:__subpackages__"],
+    visibility = ["//client:__subpackages__"],
     deps = [":transceiver_proto"],
 )

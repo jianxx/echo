@@ -6,7 +6,12 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.logging.Logger;
 
+import echo.TransceiverGrpc;
+import echo.TransceiverOuterClass.EchoRequest;
+import echo.TransceiverOuterClass.EchoResponse;
 import echo.TransmissionObjectOuterClass.TransmissionObject;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 /**
  * EchoClient
@@ -34,11 +39,16 @@ public class EchoClient {
             final String inputFromUser = commandLineInput.readLine();
             if (inputFromUser != null) {
                 logger.info(String.format("Received by Java: %s", inputFromUser));
-                TransmissionObject transmissionObject = TransmissionObject.newBuilder().setMessage(inputFromUser)
-                        .setValue(3.145f).build();
-                transmissionObject.writeTo(socketToServer.getOutputStream());
-
-                TransmissionObject receivedObject = TransmissionObject.parseFrom(socketToServer.getInputStream());
+                ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 1234).usePlaintext().build();
+                TransceiverGrpc.TransceiverBlockingStub stub = TransceiverGrpc.newBlockingStub(channel);
+                EchoRequest request = EchoRequest.newBuilder()
+                        .setFromClient(
+                                TransmissionObject.newBuilder().setMessage(inputFromUser).setValue(3.145f).build())
+                        .build();
+                EchoResponse response = stub.echo(request);
+                logger.info("Received Message from server: ");
+                logger.info(response.toString());
+                channel.shutdownNow();
             }
         } finally {
 
