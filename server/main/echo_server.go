@@ -1,13 +1,30 @@
 package main
 
 import (
+	"context"
 	"echo"
 	"fmt"
 	"log"
 	"net"
 
-	"github.com/golang/protobuf/proto"
+	"google.golang.org/grpc"
 )
+
+type EchoServer struct{}
+
+func (es *EchoServer) Echo(context context.Context, request *echo.EchoRequest) (*echo.EchoResponse, error) {
+	log.Println("Message = " + (*request).FromClient.GetMessage())
+	log.Println(fmt.Sprintf("Value = %f", (*request).FromClient.GetValue()))
+	server_message := "Received from client: " + (*request).FromClient.GetMessage()
+	server_value := (*request).FromClient.Value * 2
+	from_server := echo.TransmissionObject{
+		Message: server_message,
+		Value:   server_value,
+	}
+	return &echo.EchoResponse{
+		FromServer: &from_server,
+	}, nil
+}
 
 func main() {
 	log.Println("Spinning up the Echo Server in Go...")
@@ -23,27 +40,10 @@ func main() {
 	log.Println("Receiving on a new connection")
 	defer connection.Close()
 	defer log.Println("Connection now closed.")
-	buffer := make([]byte, 2048)
-	size, error := connection.Read(buffer)
+	grpc_server := grpc.NewServer()
+	echo.RegisterTransceiverServer(grpc_server, &EchoServer{})
+	error = grpc_server.Serve(listen)
 	if error != nil {
-		log.Panicln("Cannot read from the buffer! Error: " + error.Error())
+		log.Panicln("Unable to start serving! Error: " + error.Error())
 	}
-	data := buffer[:size]
-	transmissionObject := &echo.TransmissionObject{}
-	error = proto.Unmarshal(data, transmissionObject)
-	if error != nil {
-		log.Panicln(
-			"Unable to unmarshal the buffer! Error: " + error.Error())
-	}
-	log.Println("Message = " + transmissionObject.GetMessage())
-	log.Println("Value = " +
-		fmt.Sprintf("%f", transmissionObject.GetValue()))
-	transmissionObject.Message = "Echoed from Go: " + transmissionObject.GetMessage()
-	transmissionObject.Value = 2 * transmissionObject.GetValue()
-	message, error := proto.Marshal(transmissionObject)
-	if error != nil {
-		log.Panicln("Unable to marshal the object! Error: " + error.
-			Error())
-	}
-	connection.Write(message)
 }
