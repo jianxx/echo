@@ -1,0 +1,16 @@
+load("@rules_java//java:defs.bzl", "java_binary")
+
+java_binary(
+    name = "EchoClient",
+    srcs = ["src/main/java/com/github/jianxx/echo/EchoClient.java"],
+    main_class = "com.github.jianxx.echo.EchoClient",
+    runtime_deps = [
+        "@io_grpc_grpc_java//netty",
+    ],
+    deps = [
+        "//proto:transceiver_java_proto",
+        "//proto:transceiver_java_proto_grpc",
+        "//proto:transmission_object_java_proto",
+        "@io_grpc_grpc_java//api",
+    ],
+)
