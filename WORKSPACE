@@ -68,20 +68,6 @@ load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
 
 grpc_deps()
 
-# Initialize rules for Bazel that can be used to bundle applications for Apple platforms.
-http_archive(
-    name = "build_bazel_rules_apple",
-    sha256 = "734813e44eb5a2fcba5ffd45de9fe5d05325420a5aa1f6c97a3d88fe2c525b17",
-    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.21.1/rules_apple.0.21.1.tar.gz",
-)
-
-load(
-    "@build_bazel_rules_apple//apple:repositories.bzl",
-    "apple_rules_dependencies",
-)
-
-apple_rules_dependencies()
-
 ## add the external repositories for the Java toolchain
 RULES_JVM_EXTERNAL_TAG = "3.3"
 
