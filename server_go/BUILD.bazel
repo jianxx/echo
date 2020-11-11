@@ -3,7 +3,7 @@ load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
 go_library(
     name = "echo_server",
     srcs = ["internal/echo/echo_server.go"],
-    importpath = "echo_server",
+    importpath = "github.com/jianxx/echo",
     deps = [
         "//proto:transceiver_go_proto_grpc",
         "//proto:transmission_object_go_proto",

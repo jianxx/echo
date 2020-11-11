@@ -2,10 +2,10 @@ package main
 
 import (
 	"echo"
-	"echo_server"
 	"log"
 	"net"
 
+	echo_server "github.com/jianxx/echo"
 	"google.golang.org/grpc"
 )
 

@@ -1,4 +1,4 @@
-package echo_server
+package echo
 
 import (
 	"context"
