@@ -28,8 +28,7 @@ public class EchoClient implements AutoCloseable {
     }
 
     public EchoClient(String hostname, int port) {
-        this.channel = ManagedChannelBuilder.forAddress(hostname, port).usePlaintext().build();
-        this.stub = TransceiverGrpc.newBlockingStub(this.channel);
+        this(ManagedChannelBuilder.forAddress(hostname, port).usePlaintext().build());
     }
 
     public EchoClient(ManagedChannel channel) {
