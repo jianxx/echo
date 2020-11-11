@@ -52,10 +52,61 @@ load("@rules_proto_grpc//java:repositories.bzl", rules_proto_grpc_java_repos = "
 
 rules_proto_grpc_java_repos()
 
-load("@io_grpc_grpc_java//:repositories.bzl", "grpc_java_repositories")
+load("@io_grpc_grpc_java//:repositories.bzl", "IO_GRPC_GRPC_JAVA_ARTIFACTS", "IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS", "grpc_java_repositories")
 
 grpc_java_repositories()
 
 load("@rules_proto_grpc//go:repositories.bzl", rules_proto_grpc_go_repos = "go_repos")
 
 rules_proto_grpc_go_repos()
+
+load("@rules_proto_grpc//cpp:repositories.bzl", rules_proto_grpc_cpp_repos = "cpp_repos")
+
+rules_proto_grpc_cpp_repos()
+
+load("@com_github_grpc_grpc//bazel:grpc_deps.bzl", "grpc_deps")
+
+grpc_deps()
+
+# Initialize rules for Bazel that can be used to bundle applications for Apple platforms.
+http_archive(
+    name = "build_bazel_rules_apple",
+    sha256 = "734813e44eb5a2fcba5ffd45de9fe5d05325420a5aa1f6c97a3d88fe2c525b17",
+    url = "https://github.com/bazelbuild/rules_apple/releases/download/0.21.1/rules_apple.0.21.1.tar.gz",
+)
+
+load(
+    "@build_bazel_rules_apple//apple:repositories.bzl",
+    "apple_rules_dependencies",
+)
+
+apple_rules_dependencies()
+
+## add the external repositories for the Java toolchain
+RULES_JVM_EXTERNAL_TAG = "3.3"
+
+RULES_JVM_EXTERNAL_SHA = "d85951a92c0908c80bd8551002d66cb23c3434409c814179c0ff026b53544dab"
+
+http_archive(
+    name = "rules_jvm_external",
+    sha256 = RULES_JVM_EXTERNAL_SHA,
+    strip_prefix = "rules_jvm_external-%s" % RULES_JVM_EXTERNAL_TAG,
+    url = "https://github.com/bazelbuild/rules_jvm_external/archive/%s.zip" % RULES_JVM_EXTERNAL_TAG,
+)
+
+load("@rules_jvm_external//:defs.bzl", "maven_install")
+
+maven_install(
+    artifacts = [
+        "junit:junit:4.12",
+        "org.assertj:assertj-core:3.15.0",
+        "io.grpc:grpc-testing:1.32.1",
+        "org.mockito:mockito-core:2.28.2",
+    ] + IO_GRPC_GRPC_JAVA_ARTIFACTS,
+    fetch_sources = True,
+    override_targets = IO_GRPC_GRPC_JAVA_OVERRIDE_TARGETS,
+    repositories = [
+        "https://maven.aliyun.com/repository/public",
+        "https://maven.aliyun.com/repository/spring/",
+    ],
+)

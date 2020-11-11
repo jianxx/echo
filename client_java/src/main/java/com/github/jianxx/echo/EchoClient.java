@@ -3,7 +3,6 @@ package com.github.jianxx.echo;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Socket;
 import java.util.logging.Logger;
 
 import echo.TransceiverGrpc;
@@ -33,19 +32,23 @@ public class EchoClient implements AutoCloseable {
         this.stub = TransceiverGrpc.newBlockingStub(this.channel);
     }
 
+    public EchoClient(ManagedChannel channel) {
+        this.channel = channel;
+        this.stub = TransceiverGrpc.newBlockingStub(this.channel);
+    }
+
     public String echo(String inputFromUser) {
         logger.info(String.format("Received by Java Client: %s", inputFromUser));
         EchoRequest request = EchoRequest.newBuilder()
                 .setFromClient(TransmissionObject.newBuilder().setMessage(inputFromUser).setValue(3.145f).build())
                 .build();
         EchoResponse response = stub.echo(request);
-        channel.shutdownNow();
         logger.info(String.format("Received Message from server: %s", response.toString()));
         return response.toString();
     }
 
     public void close() throws IOException {
-        // channel.shutdownNow();
+        channel.shutdownNow();
     }
 
     public static void main(String args[]) {
