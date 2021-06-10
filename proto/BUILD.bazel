@@ -1,31 +1,11 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
-load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library", "java_proto_library")
-load("@rules_proto_grpc//go:defs.bzl", "go_grpc_library", "go_proto_library")
-load("@rules_proto_grpc//cpp:defs.bzl", "cpp_grpc_compile", "cpp_grpc_library", "cpp_proto_library")
+load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library")
+load("@rules_proto_grpc//go:defs.bzl", "go_grpc_library")
 
 proto_library(
     name = "transmission_object_proto",
     srcs = ["transmission_object.proto"],
     visibility = ["//visibility:public"],
-)
-
-go_proto_library(
-    name = "transmission_object_go_proto",
-    importpath = "echo",
-    visibility = ["//visibility:public"],
-    deps = [":transmission_object_proto"],
-)
-
-java_proto_library(
-    name = "transmission_object_java_proto",
-    visibility = ["//visibility:public"],
-    deps = [":transmission_object_proto"],
-)
-
-cpp_proto_library(
-    name = "transmission_object_cpp_proto",
-    visibility = ["//visibility:public"],
-    deps = [":transmission_object_proto"],
 )
 
 proto_library(
@@ -40,24 +20,18 @@ proto_library(
 go_grpc_library(
     name = "transceiver_go_proto_grpc",
     importpath = "echo",
+    protos = [
+        ":transceiver_proto",
+        ":transmission_object_proto",
+    ],
     visibility = ["//visibility:public"],
-    deps = [":transceiver_proto"],
-)
-
-java_proto_library(
-    name = "transceiver_java_proto",
-    visibility = ["//visibility:public"],
-    deps = [":transceiver_proto"],
 )
 
 java_grpc_library(
     name = "transceiver_java_proto_grpc",
+    protos = [
+        ":transceiver_proto",
+        ":transmission_object_proto",
+    ],
     visibility = ["//visibility:public"],
-    deps = [":transceiver_proto"],
-)
-
-cpp_grpc_library(
-    name = "transceiver_cpp_proto_grpc",
-    visibility = ["//visibility:public"],
-    deps = [":transceiver_proto"],
 )

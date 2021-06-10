@@ -8,7 +8,9 @@ import (
 )
 
 // EchoServer ...
-type EchoServer struct{}
+type EchoServer struct {
+	echo.UnimplementedTransceiverServer
+}
 
 // Echo ...
 func (es *EchoServer) Echo(context context.Context, request *echo.EchoRequest) (*echo.EchoResponse, error) {

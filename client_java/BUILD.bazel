@@ -8,9 +8,7 @@ java_binary(
         "@io_grpc_grpc_java//netty",
     ],
     deps = [
-        "//proto:transceiver_java_proto",
         "//proto:transceiver_java_proto_grpc",
-        "//proto:transmission_object_java_proto",
         "@io_grpc_grpc_java//api",
     ],
 )
@@ -20,9 +18,7 @@ java_test(
     srcs = glob(["src/test/**/*.java"]),
     deps = [
         ":EchoClient",
-        "//proto:transceiver_java_proto",
         "//proto:transceiver_java_proto_grpc",
-        "//proto:transmission_object_java_proto",
         "@io_grpc_grpc_java//api",
         "@io_grpc_grpc_java//core:inprocess",
         "@maven//:io_grpc_grpc_testing",
