@@ -102,7 +102,6 @@ compat_repositories()
 grpc_java_repositories()
 
 ## add the external repositories for the Rust toolchain
-
 http_archive(
     name = "rules_rust",
     sha256 = "18c0a02a007cd26c3f5b4d21dc26a80af776ef755460028a796bc61c649fdf3f",
@@ -122,3 +121,16 @@ grpc_deps()
 load("@rules_rust//rust:repositories.bzl", "rust_repositories")
 
 rust_repositories()
+
+## add the external repositories for the python toolchain
+http_archive(
+    name = "rules_python",
+    sha256 = "778197e26c5fbeb07ac2a2c5ae405b30f6cb7ad1f5510ea6fdac03bded96cc6f",
+    url = "https://github.com/bazelbuild/rules_python/releases/download/0.2.0/rules_python-0.2.0.tar.gz",
+)
+
+load("@rules_proto_grpc//python:repositories.bzl", rules_proto_grpc_python_repos = "python_repos")
+
+rules_proto_grpc_python_repos()
+
+grpc_deps()
