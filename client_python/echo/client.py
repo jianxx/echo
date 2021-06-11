@@ -1,6 +1,4 @@
 import grpc
-from concurrent import futures
-import time
 import proto.transceiver_pb2_grpc as pb2_grpc
 import proto.transceiver_pb2 as pb2
 import proto.transmission_object_pb2 as to_pb2
