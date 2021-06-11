@@ -1,6 +1,7 @@
 load("@rules_proto//proto:defs.bzl", "proto_library")
 load("@rules_proto_grpc//java:defs.bzl", "java_grpc_library")
 load("@rules_proto_grpc//go:defs.bzl", "go_grpc_library")
+load("@rules_proto_grpc//cpp:defs.bzl", "cpp_grpc_library")
 load("@rules_proto_grpc//rust:defs.bzl", "rust_grpc_library")
 load("@rules_proto_grpc//python:defs.bzl", "python_grpc_library")
 
@@ -31,6 +32,15 @@ go_grpc_library(
 
 java_grpc_library(
     name = "transceiver_java_proto_grpc",
+    protos = [
+        ":transceiver_proto",
+        ":transmission_object_proto",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cpp_grpc_library(
+    name = "transceiver_cpp_proto_grpc",
     protos = [
         ":transceiver_proto",
         ":transmission_object_proto",
